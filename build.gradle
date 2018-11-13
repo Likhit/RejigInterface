@@ -8,12 +8,12 @@ def grpcVersion = '1.16.1'
 
 dependencies {
   // These dependency is exported to consumers, that is to say found on their compile classpath.
-  // api 'org.apache.commons:commons-math3:3.6.1'
+  api "com.google.protobuf:protobuf-java:${protobufVersion}"
+  api "io.grpc:grpc-protobuf:${grpcVersion}"
+  api "io.grpc:grpc-stub:${grpcVersion}"
 
   // These dependency is used internally, and not exposed to consumers on their own compile classpath.
-  implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
-  implementation "io.grpc:grpc-protobuf:${grpcVersion}"
-  implementation "io.grpc:grpc-stub:${grpcVersion}"
+  // implementation "<package_name>"
 
   // Use JUnit test framework
   testImplementation 'junit:junit:4.12'
