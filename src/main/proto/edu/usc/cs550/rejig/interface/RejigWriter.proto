@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package edu.usc.cs550.rejig.interfaces;
+
+option java_multiple_files = true;
+
+import "edu/usc/cs550/rejig/interface/RejigConfig.proto";
+
+service RejigWriter {
+  rpc SetConfig (FragmentAssignments) returns (RejigConfig);
+}

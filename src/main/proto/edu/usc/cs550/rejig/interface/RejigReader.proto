@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package edu.usc.cs550.rejig.interfaces;
+
+option java_multiple_files = true;
+
+import "google/protobuf/empty.proto";
+import "edu/usc/cs550/rejig/interface/RejigConfig.proto";
+
+service RejigReader {
+  rpc GetConfig (google.protobuf.Empty) returns (RejigConfig);
+}
