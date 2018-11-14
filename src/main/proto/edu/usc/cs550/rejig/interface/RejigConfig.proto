@@ -7,12 +7,12 @@ option java_multiple_files = true;
 // Hold a mapping of fragment to memcached address.
 // The address is stored as a string in the format "ip:port".
 message FragmentAssignments {
-  map<int64, string> fragmentToCMI = 1;
+  map<int32, string> fragmentToCMI = 1;
 }
 
 // A config object is both the mapping, along with the config id
 // identifing the mapping.
 message RejigConfig {
-  int64 id = 1;
+  int32 id = 1;
   FragmentAssignments mapping = 2;
 }
