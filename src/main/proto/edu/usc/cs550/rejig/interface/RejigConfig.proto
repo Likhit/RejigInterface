@@ -4,15 +4,23 @@ package edu.usc.cs550.rejig.interfaces;
 
 option java_multiple_files = true;
 
-// Hold a mapping of fragment to memcached address.
+// Holds the server's address.
+// The fragment id is a unique identifier which changes everytime
+// the server address assigned to this fragment changes.
 // The address is stored as a string in the format "ip:port".
-message FragmentAssignments {
-  map<int32, string> fragmentToCMI = 1;
+message Fragment {
+  int32 fragmentId = 1;
+  string address = 2;
 }
 
-// A config object is both the mapping, along with the config id
-// identifing the mapping.
+// A list of fragments.
+message FragmentList {
+  repeated Fragment fragment = 1;
+}
+
+// A config object is a list of Fragments, along with an unique
+// id for the configuration.
 message RejigConfig {
   int32 id = 1;
-  FragmentAssignments mapping = 2;
+  repeated Fragment fragment = 2;
 }

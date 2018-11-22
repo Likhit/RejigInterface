@@ -43,7 +43,7 @@ public class RejigServiceTest {
     RejigConfig reply = blockingStub.getConfig(Empty.getDefaultInstance());
 
     assertEquals(reply.getId(), 1);
-    assertEquals(reply.getMapping().getFragmentToCMICount(), 4);
+    assertEquals(reply.getFragmentCount(), 4);
   }
 
   /**
@@ -64,14 +64,14 @@ public class RejigServiceTest {
         .register(InProcessChannelBuilder.forName(serverName)
           .directExecutor().build()));
 
-    FragmentAssignments assignment = FragmentAssignments.newBuilder()
-        .putFragmentToCMI(1, "server1:port_a")
-        .putFragmentToCMI(2, "server2:port_b")
+    FragmentList fragments = FragmentList.newBuilder()
+        .addFragment(Fragment.newBuilder().setAddress("server1:port_a"))
+        .addFragment(Fragment.newBuilder().setAddress("server1:port_a"))
         .build();
-    RejigConfig reply = blockingStub.setConfig(assignment);
+    RejigConfig reply = blockingStub.setConfig(fragments);
 
     assertEquals(reply.getId(), 2);
-    assertEquals(reply.getMapping().getFragmentToCMICount(), 2);
+    assertEquals(reply.getFragmentCount(), 2);
   }
 }
 
@@ -83,13 +83,11 @@ class RejigReaderTestImpl extends RejigReaderGrpc.RejigReaderImplBase {
   public void getConfig(Empty req, StreamObserver<RejigConfig> responseObserver) {
     RejigConfig config = RejigConfig.newBuilder()
       .setId(1)
-      .setMapping(FragmentAssignments.newBuilder()
-        .putFragmentToCMI(1, "server1:port_a")
-        .putFragmentToCMI(2, "server2:port_a")
-        .putFragmentToCMI(3, "server1:port_b")
-        .putFragmentToCMI(4, "server3:port_b")
-        .build()
-      ).build();
+      .addFragment(Fragment.newBuilder().setAddress("server1:port_a"))
+      .addFragment(Fragment.newBuilder().setAddress("server2:port_a"))
+      .addFragment(Fragment.newBuilder().setAddress("server1:port_b"))
+      .addFragment(Fragment.newBuilder().setAddress("server3:port_b"))
+      .build();
     responseObserver.onNext(config);
     responseObserver.onCompleted();
   }
@@ -100,10 +98,10 @@ class RejigReaderTestImpl extends RejigReaderGrpc.RejigReaderImplBase {
  */
 class RejigWriterTestImpl extends RejigWriterGrpc.RejigWriterImplBase {
   @Override
-  public void setConfig(FragmentAssignments req, StreamObserver<RejigConfig> responseObserver) {
+  public void setConfig(FragmentList req, StreamObserver<RejigConfig> responseObserver) {
     RejigConfig config = RejigConfig.newBuilder()
       .setId(2)
-      .setMapping(req)
+      .addAllFragment(req.getFragmentList())
       .build();
     responseObserver.onNext(config);
     responseObserver.onCompleted();
