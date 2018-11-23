@@ -9,7 +9,7 @@ option java_multiple_files = true;
 // the server address assigned to this fragment changes.
 // The address is stored as a string in the format "ip:port".
 message Fragment {
-  int32 fragmentId = 1;
+  int32 id = 1;
   string address = 2;
 }
 
