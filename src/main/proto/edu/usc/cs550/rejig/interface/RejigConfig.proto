@@ -13,9 +13,10 @@ message Fragment {
   string address = 2;
 }
 
-// A list of fragments.
+// A list of server addresses.
+// The index in the list indicates the fragment number of the server.
 message FragmentList {
-  repeated Fragment fragment = 1;
+  repeated string address = 1;
 }
 
 // A config object is a list of Fragments, along with an unique

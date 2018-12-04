@@ -65,8 +65,8 @@ public class RejigServiceTest {
           .directExecutor().build()));
 
     FragmentList fragments = FragmentList.newBuilder()
-        .addFragment(Fragment.newBuilder().setAddress("server1:port_a"))
-        .addFragment(Fragment.newBuilder().setAddress("server1:port_a"))
+        .addAddress("server1:port_a")
+        .addAddress("server1:port_a")
         .build();
     RejigConfig reply = blockingStub.setConfig(fragments);
 
@@ -99,11 +99,16 @@ class RejigReaderTestImpl extends RejigReaderGrpc.RejigReaderImplBase {
 class RejigWriterTestImpl extends RejigWriterGrpc.RejigWriterImplBase {
   @Override
   public void setConfig(FragmentList req, StreamObserver<RejigConfig> responseObserver) {
-    RejigConfig config = RejigConfig.newBuilder()
-      .setId(2)
-      .addAllFragment(req.getFragmentList())
-      .build();
-    responseObserver.onNext(config);
+    RejigConfig.Builder builder = RejigConfig.newBuilder()
+      .setId(2);
+    for (String address : req.getAddressList()) {
+      builder.addFragment(Fragment.newBuilder()
+        .setId(1)
+        .setAddress(address)
+        .build()
+      );
+    }
+    responseObserver.onNext(builder.build());
     responseObserver.onCompleted();
   }
 }
