@@ -66,7 +66,7 @@ public class RejigServiceTest {
 
     FragmentList fragments = FragmentList.newBuilder()
         .addAddress("server1:port_a")
-        .addAddress("server1:port_a")
+        .addAddress("server1:port_b")
         .build();
     RejigConfig reply = blockingStub.setConfig(fragments);
 
